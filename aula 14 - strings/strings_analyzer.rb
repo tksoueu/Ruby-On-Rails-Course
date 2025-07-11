@@ -1,10 +1,11 @@
-# frozen_string_literal: true
-
 puts "What's your first name?"
+# o gets.chomp recebe o que o usuário digitar
 first_name = gets.chomp
+puts "So, hello #{first_name}!"
 
 puts "What's your last name?"
 last_name = gets.chomp
+puts "That's a nice last name, #{last_name}!"
 
 full_name = "#{first_name} #{last_name}"
 

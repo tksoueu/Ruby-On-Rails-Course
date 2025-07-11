@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 puts 'First number: '
 num_1 = gets.chomp
 

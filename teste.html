@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Teste JavaScript</title>
+</head>
+<body>
+  <h1>Questão 01 - Transformação de texto (primeira letra pro final + xyz)</h1>
+
+  <input type="text" id="entrada1" value="Hello world!">
+  <button onclick="executar_primeira()">Transformar</button>
+
+  <p>Resultado: <span id="saida1"></span></p>
+
+  <hr>
+
+  <h1>Questão 02 - Lista/Intervalo</h1>
+
+  <input type="text" id="entrada2" value="-10, -9, -8, -6, -3, -2, -1, 0, 1, 3, 4, 5, 7, 8, 9, 10, 11, 14, 15, 17, 18, 19, 20">
+  <button onclick="executar_segunda()">Executar</button>
+
+  <p>Resultado: <span id="saida2"></span></p>
+
+  <hr>
+
+  <h1>Questão 03 - Pontuação de tiro do Morteiro</h1>
+
+  Alvo X: <input type="number" id="targetX" value="10">
+  Alvo Y: <input type="number" id="targetY" value="5"><br><br>
+
+  Velocidade X: <input type="number" id="vX" value="9">
+  Velocidade Y: <input type="number" id="vY" value="5">
+  Velocidade Z: <input type="number" id="vZ" value="7">
+  <button onclick="execute_third()">Calcular</button>
+
+  <p>Resultado: <span id="output3"></span></p>
+
+  <script>
+    function transformText(text){
+      const new_text = text.split(' ').map(word => {
+        const last = word[word.length - 1];
+        const has_pontuation = !/[a-zA-Z0-9]/.test(last);
+
+        let base = word;
+        let pontuation = '';
+
+        if (has_pontuation) {
+          base = word.slice(0, -1);
+          pontuation = last;
+        }
+
+        if (base.length < 1) return word;
+        
+        return base.slice(1) + base[0] + 'xyz' + pontuation;
+      }).join(' ');
+
+      return new_text;
+    }
+
+    function executar_primeira() {
+      const texto = document.getElementById('entrada1').value;
+      const resultado = transformText(texto);
+      document.getElementById('saida1').textContent = resultado;
+    }
+
+    function format_list(list) {
+      let result = [];
+      let i = 0;
+
+      while (i < list.length) {
+        let start = i;
+
+        while (i + 1 < list.length && list[i + 1] === list[i] + 1) {
+          i++;
+        }
+
+        const stop = i;
+
+        if (stop - start >= 2) {
+          result.push(`${list[start]}-${list[stop]}`);
+        } else {
+          for (let j = start; j <= stop; j++) {
+            result.push(list[j]);
+          }
+        }
+
+        i++;
+      }
+
+      return result.join(',');
+    }
+
+    function executar_segunda() {
+      const texto = document.getElementById('entrada2').value;
+      const lista = texto.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+      const resultado = format_list(lista);
+      document.getElementById('saida2').textContent = resultado;
+    }
+
+    function calculateScore(targetX, targetY, vX, vY, vZ) {
+      const g = -9.81;
+      const t = (-2 * vZ) / g;
+
+      const impactX = vX * t;
+      const impactY = vY * t;
+
+      const dx = impactX - targetX;
+      const dy = impactY - targetY;
+
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const score = Math.max(0, 10 * (1 - distance / 10));
+
+      return score;
+    }
+
+    function execute_third() {
+      const targetX = parseFloat(document.getElementById('targetX').value);
+      const targetY = parseFloat(document.getElementById('targetY').value);
+      const vX = parseFloat(document.getElementById('vX').value);
+      const vY = parseFloat(document.getElementById('vY').value);
+      const vZ = parseFloat(document.getElementById('vZ').value);
+
+      const result = calculateScore(targetX, targetY, vX, vY, vZ);
+      document.getElementById('output3').textContent = result;
+    }
+  </script>
+</body>
+</html>
